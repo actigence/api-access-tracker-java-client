@@ -1,0 +1,15 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "VisualEditor0",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:GetQueueUrl",
+        "sqs:SendMessage",
+        "sqs:CreateQueue"
+      ],
+      "Resource": "arn:aws:sqs:us-east-1:717292077848:aal_api_invocation_queue"
+    }
+  ]
+}
