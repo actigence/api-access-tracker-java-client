@@ -13,14 +13,17 @@ import static java.lang.System.getProperty;
 import static java.lang.System.getenv;
 import static java.util.Optional.ofNullable;
 
+/**
+ * AWS SQS client for publishing messages to SQS queues
+ */
 @Slf4j
 public class SQSClient
 {
     private static final String QUEUE_NAME_ENV = "AAL_QUEUE_NAME";
     private static final String QUEUE_NAME_SYS_PROP = "all.queue_name";
     private static final String CLIENT_ID_ENV = "AAL_CLIENT_ID";
-    private static final String CLIENT_ID_SYS_PROP = "all.client_id";
-    private static final String DEFAULT_QUEUE_NAME = "aal_api_invocation_queue";
+    private static final String CLIENT_ID_SYS_PROP = "aal.client_id";
+    private static final String DEFAULT_QUEUE_NAME = "aal_inbound_request_logging_queue";
 
     private final Gson gson;
     private final String queueUrl;
@@ -40,6 +43,8 @@ public class SQSClient
      */
     public void publish(ApiAccessLog apiAccessLog)
     {
+        apiAccessLog.setClientId(getClientId());
+
         SendMessageRequest send_msg_request = new SendMessageRequest()
                 .withQueueUrl(queueUrl)
                 .withMessageBody(gson.toJson(apiAccessLog));
