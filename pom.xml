@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.actigence</groupId>
-    <artifactId>api-access-logger-client</artifactId>
+    <artifactId>api-access-tracker-java-client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <build>
@@ -21,8 +21,8 @@
         </plugins>
     </build>
 
-    <name>api-access-logger-client</name>
-    <url>http://www.example.com</url>
+    <name>api-access-tracker-java-client</name>
+    <url>https://github.com/Actigence/api-access-tracker-java-client</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -96,4 +96,12 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>actigence_open_github</id>
+            <name>GitHub Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/actigence/api-access-tracker-java-client</url>
+        </repository>
+    </distributionManagement>
 </project>
