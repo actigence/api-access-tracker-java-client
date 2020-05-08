@@ -8,8 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class HttpResponseCachingWrapper extends HttpServletResponseWrapper
-{
+public class HttpResponseCachingWrapper extends HttpServletResponseWrapper {
     private ByteArrayPrintWriter byteArrayPrintWriter = new ByteArrayPrintWriter();
 
     private byte[] bytes;
@@ -22,79 +21,64 @@ public class HttpResponseCachingWrapper extends HttpServletResponseWrapper
      * @param response The response to be wrapped
      * @throws IllegalArgumentException if the response is null
      */
-    public HttpResponseCachingWrapper(HttpServletResponse response)
-    {
+    public HttpResponseCachingWrapper(HttpServletResponse response) {
         super(response);
         httpServletResponse = response;
     }
 
     @Override
-    public PrintWriter getWriter() throws IOException
-    {
+    public PrintWriter getWriter() throws IOException {
         return byteArrayPrintWriter.getWriter();
     }
 
-    public ServletOutputStream getOutputStream()
-    {
+    public ServletOutputStream getOutputStream() {
         return byteArrayPrintWriter.stream;
     }
 
-    public byte[] getBytes()
-    {
-        if (bytes == null)
-        {
+    public byte[] getBytes() {
+        if (bytes == null) {
             bytes = byteArrayPrintWriter.toByteArray();
         }
         return bytes;
     }
 
-    public int getStatusCode()
-
-    {
+    public int getStatusCode() {
         return httpServletResponse.getStatus();
     }
 
-    private static class ByteArrayPrintWriter
-    {
+    private static class ByteArrayPrintWriter {
         private ByteArrayOutputStream baos = new ByteArrayOutputStream();
         private PrintWriter writer = new PrintWriter(baos);
         ServletOutputStream stream = new ByteArrayServletStream(baos);
 
-        byte[] toByteArray()
-        {
+        byte[] toByteArray() {
             return baos.toByteArray();
         }
 
-        public PrintWriter getWriter()
-        {
+        public PrintWriter getWriter() {
             return writer;
         }
     }
 
-    private static class ByteArrayServletStream extends ServletOutputStream
-    {
+    private static class ByteArrayServletStream extends ServletOutputStream {
         private final ByteArrayOutputStream byteArrayOutputStream;
 
-        private ByteArrayServletStream(ByteArrayOutputStream baos)
-        {
+        private ByteArrayServletStream(ByteArrayOutputStream baos) {
             this.byteArrayOutputStream = baos;
         }
 
         @Override
-        public boolean isReady()
-        {
+        public boolean isReady() {
             return false;
         }
 
         @Override
-        public void setWriteListener(WriteListener writeListener)
-        {
+        public void setWriteListener(WriteListener writeListener) {
 
         }
 
         @Override
-        public void write(int b) throws IOException
-        {
+        public void write(int b) throws IOException {
             byteArrayOutputStream.write(b);
         }
     }

@@ -1,4 +1,7 @@
-# API Access Tracker (Java Client)
+# API Access Tracker (Java Client) 
+![Java CI with Maven](https://github.com/Actigence/api-access-tracker-java-client/workflows/Java%20CI%20with%20Maven/badge.svg)
+
+
 This is the supporting Java client for [API Access Tracker](https://github.com/Actigence/api-access-tracker-backend).
 
 This Java client in conjunction with the [API Access Tracker (Backend)](https://github.com/Actigence/api-access-tracker-backend)
@@ -75,8 +78,40 @@ public class FilterConfiguration
         FilterRegistrationBean<ApiAccessLoggingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new ApiAccessLoggingFilter());
         registrationBean.addUrlPatterns("/test/*");
+        registrationBean.addInitParameter("clientId", "MyServiceName");
         return registrationBean;
     }
 }
 ```
+
+For projects built using Java Servlets:
+```xml
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+        PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+        "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+
+<web-app>
+
+    <filter>
+        <filter-name>API Access Tracking Filter</filter-name>
+        <filter-class>com.actigence.aal.ApiAccessLoggingFilter</filter-class>
+        <init-param>
+            <param-name>clientId</param-name>
+            <param-value>MyServiceName</param-value>
+        </init-param>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>API Access Tracking Filter</filter-name>
+        <url-pattern>/test/*</url-pattern>
+    </filter-mapping>
+
+</web-app>
+```
 That's it. Now any request made to your webservice APIs at the configured URLs will be intercepted and you will be able to see entries in AWS DynamoDB tables.
+
+# Limitations
+* Minimum Java version 8 is required.
+* AWS SQS has limit of maximum payload size of 256 KB. Hence combined data of request and response values can not be more than 256 KB. 
